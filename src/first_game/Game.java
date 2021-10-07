@@ -1,6 +1,9 @@
 package first_game;
 
-public class Game implements Runnable{
+import java.util.ArrayList;
+import java.awt.Canvas;
+
+public class Game extends Canvas implements Runnable{
 	/**
 	 * This is a personal study on game development, where the main objective is to 
 	 * understand more about the complex algorithms used in the game industry.
@@ -13,12 +16,19 @@ public class Game implements Runnable{
 	 * 
 	 * @author Cristian Paixão
 	 */
+	private static final long serialVersionUID = 1L;
 	private boolean isRunning;
 	private Thread thread;
+	private ArrayList<Entity> entities = new ArrayList<>();
+	
+	public Game() {
+		entities.add(null);
+	}
 	
 	public static void main(String[] args) {
 		Game game = new Game();
 		game.start();
+		
 	}
 	
 	public synchronized void start() {
