@@ -68,7 +68,11 @@ public class Game extends Canvas implements Runnable{
 	public synchronized void stop() {
 		// Stop the game threading
 		isRunning = false;
-		
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void tick() {
@@ -123,6 +127,7 @@ public class Game extends Canvas implements Runnable{
 				timer += 1000;
 			}
 		}
-		
+	
+		stop();
 	}
 }
