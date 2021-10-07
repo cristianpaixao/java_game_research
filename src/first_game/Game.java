@@ -29,6 +29,12 @@ public class Game extends Canvas implements Runnable{
 	
 	public Game() {
 		this.setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
+		initFrame();
+
+		//entities.add(null);
+	}
+	
+	public void initFrame() {
 		frame = new JFrame("Game Title");
 		frame.add(this);
 		frame.setResizable(false);
@@ -36,7 +42,6 @@ public class Game extends Canvas implements Runnable{
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		//entities.add(null);
 	}
 	
 	public static void main(String[] args) {
@@ -51,15 +56,21 @@ public class Game extends Canvas implements Runnable{
 		thread = new Thread(this);
 		thread.start();
 	}
+	
+	public synchronized void stop() {
+		// Stop the game threading
+		isRunning = false;
+		
+	}
 
 	public void tick() {
 		// Update the game
-		System.out.println("Tick");
+//		System.out.println("Tick");
 	}
 	
 	public void render() {
 		// Render the game
-		System.out.println("Render");
+//		System.out.println("Render");
 	}
 
 	@Override
@@ -70,9 +81,28 @@ public class Game extends Canvas implements Runnable{
 		 * Here, we process the entire logic layer of the game, 
 		 * as well as set the frame-per-second refresh rate.
 		 */
+		long lastTime = System.nanoTime();
+		double amountOfTicks = 60.00;
+		double ns = 1000000000 / amountOfTicks;
+		double delta = 0;
+		int frames = 0;
+		double timer = System.currentTimeMillis();
 		while (isRunning) {
-			tick();
-			render();
+			long now = System.nanoTime();
+			delta += (now - lastTime) / ns;
+			lastTime = now;
+			if(delta >= 1) {
+				tick();
+				render();
+				frames++;
+				delta--;
+			}
+			
+			if(System.currentTimeMillis() - timer >= 1000) {
+				System.out.println("FPS: " + frames);
+				frames = 0;
+				timer += 1000;
+			}
 		}
 		
 	}
