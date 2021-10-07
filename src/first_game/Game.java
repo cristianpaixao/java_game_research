@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.awt.Graphics;
+import java.awt.Color;
+
 
 public class Game extends Canvas implements Runnable{
 	/**
@@ -26,10 +31,13 @@ public class Game extends Canvas implements Runnable{
 	private final int WIDTH = 160;
 	private final int HEIGHT = 120;
 	private final int SCALE = 3;
+
+	private BufferedImage image;
 	
 	public Game() {
 		this.setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
+		image = new BufferedImage(160, 120, BufferedImage.TYPE_INT_RGB);
 
 		//entities.add(null);
 	}
@@ -70,7 +78,18 @@ public class Game extends Canvas implements Runnable{
 	
 	public void render() {
 		// Render the game
-//		System.out.println("Render");
+		BufferStrategy bs = this.getBufferStrategy();
+		if(bs == null) {
+			this.createBufferStrategy(3);
+			return;
+		}
+		
+		Graphics g = image.getGraphics();
+		g.setColor(new Color(250,19,19));
+		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g = bs.getDrawGraphics();
+		g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
+		bs.show();
 	}
 
 	@Override
