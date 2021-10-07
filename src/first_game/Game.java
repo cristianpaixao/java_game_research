@@ -1,7 +1,9 @@
 package first_game;
 
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import java.awt.Canvas;
+import java.awt.Dimension;
 
 public class Game extends Canvas implements Runnable{
 	/**
@@ -20,9 +22,21 @@ public class Game extends Canvas implements Runnable{
 	private boolean isRunning;
 	private Thread thread;
 	private ArrayList<Entity> entities = new ArrayList<>();
+	public static JFrame frame;
+	private final int WIDTH = 160;
+	private final int HEIGHT = 120;
+	private final int SCALE = 3;
 	
 	public Game() {
-		entities.add(null);
+		this.setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
+		frame = new JFrame("Game Title");
+		frame.add(this);
+		frame.setResizable(false);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		//entities.add(null);
 	}
 	
 	public static void main(String[] args) {
